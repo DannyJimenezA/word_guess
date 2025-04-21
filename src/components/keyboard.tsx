@@ -25,7 +25,12 @@ const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, keyStatus }) => {
                 className={`keyboard-key ${status} ${key === 'ENTER' || key === 'BACKSPACE' ? 'wide-key' : ''}`}
                 onClick={() => onKeyPress(key)}
               >
-                {key === 'BACKSPACE' ? '⌫' : key}
+                {/* {key === 'BACKSPACE' ? '⌫' : key} */}
+                {
+    key === 'BACKSPACE' ? '⌫' :
+    key === 'ENTER' ? <span className="enter-label">✔</span> :
+    key
+  }
               </button>
             );
           })}
