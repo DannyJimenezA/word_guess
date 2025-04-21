@@ -1,22 +1,28 @@
+/* RESET BÁSICO */
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #1e1e1e;
-  color: white;
+  background-color: #121213;
+  color: #ffffff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   height: 100%;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 #root {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 1rem;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1rem;
+  min-height: 100vh;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+  background-color: #121213;
 }
 
-/* App Container */
+/* CONTENEDOR PRINCIPAL */
 .app {
   width: 100%;
   max-width: 480px;
@@ -26,18 +32,17 @@ html, body {
   min-height: 100vh;
 }
 
-/* Título */
+/* TÍTULO */
 h1 {
-  font-size: clamp(24px, 6vw, 36px);
-  margin-bottom: 1rem;
-  text-align: center;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  margin: 1rem 0;
 }
 
-/* Tablero */
+/* TABLERO */
 .board {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
 }
 
@@ -47,83 +52,120 @@ h1 {
   gap: 6px;
 }
 
-/* Casillas */
+/* CASILLAS */
 .tile {
   aspect-ratio: 1 / 1;
   width: 100%;
-  font-size: clamp(16px, 5vw, 28px);
+  background-color: #121213;
+  border: 2px solid #3a3a3c;
+  font-size: clamp(1rem, 6vw, 2rem);
   font-weight: bold;
-  border: 2px solid #ccc;
-  background-color: white;
-  color: black;
+  color: white;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   text-transform: uppercase;
 }
 
+/* ESTADOS */
 .tile.correct {
-  background-color: #4caf50;
+  background-color: #538d4e;
+  border-color: #538d4e;
   color: white;
 }
 
 .tile.present {
-  background-color: #ff9800;
+  background-color: #b59f3b;
+  border-color: #b59f3b;
   color: white;
 }
 
 .tile.absent {
-  background-color: #9e9e9e;
+  background-color: #3a3a3c;
+  border-color: #3a3a3c;
   color: white;
 }
 
-/* Teclado */
+/* TECLADO */
+/* Ajuste responsive FINAL */
+
+/* TECLADO PRINCIPAL */
 .keyboard {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 6px;
+  box-sizing: border-box;
 }
 
+/* FILAS DE TECLAS */
 .keyboard-row {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
   gap: 6px;
-  margin-bottom: 8px;
+  flex-wrap: nowrap;
 }
 
+/* TECLA GENERAL */
 .keyboard-key {
-  flex: 1 0 8%;
-  max-width: 12%;
-  min-width: 32px;
-  padding: 10px 6px;
-  font-size: clamp(12px, 4vw, 18px);
-  text-align: center;
-  background-color: #121212;
-  color: white;
-  border-radius: 4px;
+  background-color: #818384;
   border: none;
-  cursor: pointer;
+  border-radius: 4px;
+  color: white;
+  font-size: clamp(12px, 4vw, 18px);
+  font-weight: bold;
+  padding: 0.8rem 0.3rem;
+  text-align: center;
   user-select: none;
+  cursor: pointer;
+  transition: transform 0.05s ease;
+  flex: 1;
+  max-width: 9%;
 }
 
+/* TECLA ESPECIAL (ENTER y BACKSPACE) */
+.keyboard-key.wide-key {
+  max-width: 15%;
+  flex: 1.5;
+}
+
+/* AL HACER CLICK */
+.keyboard-key:active {
+  transform: scale(0.95);
+}
+
+/* ESTADOS */
 .keyboard-key.correct {
-  background-color: #4caf50;
+  background-color: #538d4e;
 }
 
 .keyboard-key.present {
-  background-color: #ff9800;
+  background-color: #b59f3b;
 }
 
 .keyboard-key.absent {
-  background-color: #757575;
+  background-color: #3a3a3c;
 }
 
-.keyboard-key.wide-key {
-  flex: 1 0 20%;
-  max-width: 120px;
+/* RESPONSIVE EXTRA: para pantallas chicas */
+@media (max-width: 480px) {
+  .keyboard-key {
+    font-size: 12px;
+    padding: 0.5rem 0.2rem;
+    max-width: 11%;
+  }
+
+  .keyboard-key.wide-key {
+    flex: 1.3;
+    max-width: 20%;
+  }
 }
 
-/* Mensaje de fin */
+
+
+/* MENSAJE FINAL */
 .end-message {
   margin-top: 20px;
   text-align: center;
@@ -132,31 +174,16 @@ h1 {
 .end-message button {
   margin-top: 10px;
   padding: 10px 20px;
-  background-color: #2196f3;
+  background-color: #6aaa64;
   border: none;
   color: white;
-  font-size: 16px;
+  font-size: 1rem;
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
 }
 
 .end-message button:hover {
-  background-color: #1976d2;
-}
-
-/* Mobile optimizations */
-/* @media (max-width: 480px) {
-  .keyboard-key {
-    min-width: 28px;
-    font-size: 14px;
-    padding: 8px 4px;
-  }
-} */
-@media (max-width: 480px) {
-  .keyboard-key.wide-key {
-    flex: 1 0 40%;
-    max-width: 100%;
-  }
+  background-color: #538d4e;
 }
 
