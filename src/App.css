@@ -7,19 +7,19 @@ html, body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   height: 100%;
   width: 100%;
-  overflow-x: hidden;
+  overflow: hidden; /* ✅ evita scroll innecesario */
+  max-width: 100vw;
 }
 
 #root {
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding: 1rem;
-  min-height: 100vh;
+  align-items: center; /* ✅ centra verticalmente también */
+  height: 100vh;       /* ✅ ocupa toda la pantalla sin más */
   width: 100%;
-  padding: 1rem;
   box-sizing: border-box;
   background-color: #121213;
+  overflow: hidden;
 }
 
 /* CONTENEDOR PRINCIPAL */
@@ -29,13 +29,18 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
+  justify-content: flex-start;
+  height: 100%;
+  padding: 1rem 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* TÍTULO */
 h1 {
   font-size: clamp(1.5rem, 5vw, 2.5rem);
   margin: 1rem 0;
+  text-align: center;
 }
 
 /* TABLERO */
@@ -44,12 +49,16 @@ h1 {
   flex-direction: column;
   gap: 8px;
   width: 100%;
+  padding: 0 6px;
+  box-sizing: border-box;
 }
 
 .row {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 6px;
+  width: 100%; 
+  box-sizing: border-box;
 }
 
 /* CASILLAS */
@@ -65,31 +74,26 @@ h1 {
   align-items: center;
   justify-content: center;
   text-transform: uppercase;
+  box-sizing: border-box;
 }
 
 /* ESTADOS */
 .tile.correct {
   background-color: #538d4e;
   border-color: #538d4e;
-  color: white;
 }
 
 .tile.present {
   background-color: #b59f3b;
   border-color: #b59f3b;
-  color: white;
 }
 
 .tile.absent {
   background-color: #3a3a3c;
   border-color: #3a3a3c;
-  color: white;
 }
 
 /* TECLADO */
-/* Ajuste responsive FINAL */
-
-/* TECLADO PRINCIPAL */
 .keyboard {
   margin-top: 1.5rem;
   width: 100%;
@@ -98,6 +102,7 @@ h1 {
   gap: 8px;
   padding: 0 6px;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 /* FILAS DE TECLAS */
@@ -105,7 +110,7 @@ h1 {
   display: flex;
   justify-content: center;
   gap: 6px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 
 /* TECLA GENERAL */
@@ -121,49 +126,31 @@ h1 {
   user-select: none;
   cursor: pointer;
   transition: transform 0.05s ease;
-  flex: 1;
-  max-width: 9%;
+  flex: 1 1 8%;
+  max-width: none;
+  min-width: 32px;
+  overflow: hidden;
 }
 
 /* TECLA ESPECIAL (ENTER y BACKSPACE) */
 .keyboard-key.wide-key {
-  max-width: 15%;
-  flex: 1.5;
+  max-width: none;
+  flex: 1 1 15%;
 }
 
-/* AL HACER CLICK */
 .keyboard-key:active {
   transform: scale(0.95);
 }
 
-/* ESTADOS */
 .keyboard-key.correct {
   background-color: #538d4e;
 }
-
 .keyboard-key.present {
   background-color: #b59f3b;
 }
-
 .keyboard-key.absent {
   background-color: #3a3a3c;
 }
-
-/* RESPONSIVE EXTRA: para pantallas chicas */
-@media (max-width: 480px) {
-  .keyboard-key {
-    font-size: 12px;
-    padding: 0.5rem 0.2rem;
-    max-width: 11%;
-  }
-
-  .keyboard-key.wide-key {
-    flex: 1.3;
-    max-width: 20%;
-  }
-}
-
-
 
 /* MENSAJE FINAL */
 .end-message {
@@ -187,3 +174,18 @@ h1 {
   background-color: #538d4e;
 }
 
+/* MOBILE FIXES */
+@media (max-width: 480px) {
+  .keyboard-key {
+    font-size: 12px;
+    padding: 0.5rem 0.2rem;
+    max-width: 11%;
+  }
+
+  .keyboard-key.wide-key {
+    flex: 1.3;
+    max-width: 20%;
+  }
+
+  
+}
