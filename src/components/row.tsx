@@ -1,5 +1,5 @@
 import React from 'react';
-import Tile from './title';
+import Tile from './tile';
 
 interface RowProps {
   word: string;
@@ -10,6 +10,35 @@ interface RowProps {
 
 const Row: React.FC<RowProps> = ({ word, solution, isSubmitted, wordLength }) => {
   const letters = word.padEnd(wordLength).split('');
+  const solutionArray = solution.split('');
+  const tileStates: ('correct' | 'present' | 'absent')[] = Array(wordLength).fill('absent');
+
+  if (isSubmitted) {
+    const usedIndices = new Set<number>();
+
+    // Paso 1: Letras correctas
+    for (let i = 0; i < wordLength; i++) {
+      if (letters[i] === solutionArray[i]) {
+        tileStates[i] = 'correct';
+        usedIndices.add(i);
+      }
+    }
+
+    // Paso 2: Letras presentes
+    for (let i = 0; i < wordLength; i++) {
+      if (tileStates[i] === 'correct') continue;
+      const letter = letters[i];
+
+      const matchIndex = solutionArray.findIndex(
+        (solLetter, idx) => solLetter === letter && !usedIndices.has(idx)
+      );
+
+      if (matchIndex !== -1) {
+        tileStates[i] = 'present';
+        usedIndices.add(matchIndex);
+      }
+    }
+  }
 
   return (
     <div className={`row len-${wordLength}`}>
@@ -17,9 +46,9 @@ const Row: React.FC<RowProps> = ({ word, solution, isSubmitted, wordLength }) =>
         <Tile
           key={i}
           letter={letter}
-          solution={solution[i]}
           isSubmitted={isSubmitted}
           index={i}
+          status={isSubmitted ? tileStates[i] : undefined}
         />
       ))}
     </div>

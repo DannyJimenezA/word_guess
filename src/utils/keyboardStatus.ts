@@ -1,46 +1,47 @@
 export type LetterStatus = 'correct' | 'present' | 'absent';
 
-export function getKeyboardStatus(
-  attempts: string[],
-  solution: string
-): Map<string, LetterStatus> {
+export function getKeyboardStatus(attempts: string[], solution: string): Map<string, LetterStatus> {
   const statusMap = new Map<string, LetterStatus>();
-  const solutionArray = solution.toUpperCase().split('');
 
-  attempts.forEach((attempt) => {
-    const attemptLetters = attempt.toUpperCase().split('');
-    const usedIndices = Array(solution.length).fill(false);
+  for (const word of attempts) {
+    const letterStates: LetterStatus[] = Array(word.length).fill('absent');
+    const solutionLetters = solution.split('');
+    const usedIndices = new Set<number>();
 
-    // Paso 1: marcar correct
-    attemptLetters.forEach((letter, i) => {
-      if (letter === solutionArray[i]) {
-        statusMap.set(letter, 'correct');
-        usedIndices[i] = true;
+    // Paso 1: Letras correctas (verdes)
+    for (let i = 0; i < word.length; i++) {
+      if (word[i] === solution[i]) {
+        letterStates[i] = 'correct';
+        usedIndices.add(i);
       }
-    });
+    }
 
-    // Paso 2: marcar present y absent
-    attemptLetters.forEach((letter, i) => {
-      if (letter === solutionArray[i]) return;
+    // Paso 2: Letras presentes (amarillas)
+    for (let i = 0; i < word.length; i++) {
+      if (letterStates[i] === 'correct') continue;
 
-      const currentStatus = statusMap.get(letter);
-      const index = solutionArray.findIndex(
-        (solLetter, j) => solLetter === letter && !usedIndices[j]
-      );
+      const letter = word[i];
+      const foundIndex = solutionLetters.findIndex((solLetter, idx) => solLetter === letter && !usedIndices.has(idx));
 
-      if (index !== -1) {
-        // solo actualiza si el estado actual no es 'correct'
-        if (currentStatus !== 'correct') {
-          statusMap.set(letter, 'present');
-          usedIndices[index] = true;
-        }
-      } else {
-        if (!currentStatus) {
-          statusMap.set(letter, 'absent');
-        }
+      if (foundIndex !== -1) {
+        letterStates[i] = 'present';
+        usedIndices.add(foundIndex);
       }
-    });
-  });
+    }
+
+    // Actualiza el estado global del teclado
+    for (let i = 0; i < word.length; i++) {
+      const key = word[i];
+      const status = letterStates[i];
+
+      const prev = statusMap.get(key);
+
+      if (prev === 'correct') continue;
+      if (prev === 'present' && status === 'absent') continue;
+
+      statusMap.set(key, status);
+    }
+  }
 
   return statusMap;
 }
